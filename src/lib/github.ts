@@ -1,40 +1,10 @@
-import fs from "fs";
-import path from "path";
-
 interface Contribution {
   date: string;
   count: number;
   level: number;
 }
 
-interface CachedData {
-  contributions: Contribution[];
-  timestamp: number;
-}
-
-const CACHE_FILE = path.join(process.cwd(), ".cache", "github-contributions.json");
-const CACHE_DURATION = 3600 * 1000; // 1 hour
-
-function readCache(): CachedData | null {
-  try {
-    if (!fs.existsSync(CACHE_FILE)) return null;
-    const data = JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"));
-    if (Date.now() - data.timestamp < CACHE_DURATION) {
-      return data;
-    }
-  } catch {}
-  return null;
-}
-
-function writeCache(data: CachedData) {
-  fs.mkdirSync(path.dirname(CACHE_FILE), { recursive: true });
-  fs.writeFileSync(CACHE_FILE, JSON.stringify(data));
-}
-
 export async function getContributions(): Promise<Contribution[]> {
-  const cached = readCache();
-  if (cached) return cached.contributions;
-
   const token = process.env.GITHUB_TOKEN;
   if (!token) return [];
 
@@ -89,7 +59,6 @@ export async function getContributions(): Promise<Contribution[]> {
       }))
     );
 
-    writeCache({ contributions, timestamp: Date.now() });
     return contributions;
   } catch {
     return [];
