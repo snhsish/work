@@ -58,10 +58,13 @@ import {
   SiOpencode,
   SiGooglegemini,
   SiAgentskills,
+  SiNvidia,
+  SiHyprland,
 } from "react-icons/si";
 import { VscVscode, VscMcp } from "react-icons/vsc";
 import { DiRedis } from "react-icons/di";
 import { BsOpenai } from "react-icons/bs";
+import { FaLaptop, FaMicrochip } from "react-icons/fa6";
 
 const techStack = {
   Languages: [
@@ -170,6 +173,46 @@ export default function TechStackSection() {
           </div>
         </div>
       ))}
+
+      <div className="mt-8 border-t border-[var(--border)] pt-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <h3 className="mb-2 text-xs font-medium text-[var(--muted)]">Hardware</h3>
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2 text-sm text-[var(--text)]">
+                <FaLaptop className="h-4 w-4 text-[var(--icon-default)]" />
+                <span>OMEN by HP Gaming Laptop 16</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-[var(--text)]">
+                <FaMicrochip className="h-4 w-4 text-[var(--icon-default)]" />
+                <span>AMD Ryzen 7 7840HS (16) @ 3.80 GHz</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-[var(--text)]">
+                <SiNvidia className="h-4 w-4 text-[var(--icon-default)]" />
+                <span>NVIDIA GeForce RTX 4060 Max-Q</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="mb-2 text-xs font-medium text-[var(--muted)]">Software</h3>
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-center gap-2 text-sm text-[var(--text)]">
+                <SiNixos className="h-4 w-4 text-[var(--icon-default)]" />
+                <span>NixOS 26.05 (Yarara)</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-[var(--text)]">
+                <SiLinux className="h-4 w-4 text-[var(--icon-default)]" />
+                <span>Linux 6.18.32</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-[var(--text)]">
+                <SiHyprland className="h-4 w-4 text-[var(--icon-default)]" />
+                <span>Hyprland 0.55.0 (Wayland)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

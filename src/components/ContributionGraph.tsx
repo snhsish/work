@@ -81,7 +81,7 @@ export default function ContributionGraph() {
         const numWeeks = Math.ceil((contributions.slice(-9 * 4 * 7).length) / 7);
         const available = width - dayLabelWidth - (numWeeks - 1) * gap;
         const size = Math.floor(available / numWeeks);
-        setCellSize(Math.max(Math.min(size, 16), 8));
+        setCellSize(Math.max(Math.min(size, 16), 10));
       }
     });
     observer.observe(el);
@@ -174,7 +174,7 @@ export default function ContributionGraph() {
   };
 
   return (
-    <div ref={graphRef} className="relative w-full">
+    <div ref={graphRef} className="relative w-full overflow-x-auto">
       <div className="relative mb-1" style={{ height: "16px", marginLeft: `${dayLabelWidth}px` }}>
         {monthLabels.map((label) => (
           <span
