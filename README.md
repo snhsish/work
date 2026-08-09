@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, set up your GitHub token:
+
+1. Copy `.env.local.example` to `.env.local`
+2. Create a GitHub Personal Access Token at https://github.com/settings/tokens
+3. Add the token to `.env.local` (requires `public_repo` scope)
+
+Then, run the development server:
 
 ```bash
 npm run dev
