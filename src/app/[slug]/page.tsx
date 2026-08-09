@@ -1,11 +1,24 @@
-import fs from "fs";
-import path from "path";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { MarkdownContent } from "@/components/MarkdownContent";
+import { getMarkdownContent } from "@/lib/markdown";
+import { projects } from "@/lib/projects";
 
-export default function OrcrysPage() {
-  const filePath = path.join(process.cwd(), "content", "orcrys.md");
-  const content = fs.readFileSync(filePath, "utf-8");
+export async function generateStaticParams() {
+  return Object.keys(projects).map((slug) => ({ slug }));
+}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const source = projects[slug];
+
+  if (!source) notFound();
+
+  const content = await getMarkdownContent(source);
 
   return (
     <div className="mx-auto w-full max-w-2xl px-5 py-12 sm:py-20">
