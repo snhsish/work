@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import ContributionGraph from "./ContributionGraph";
 
 const actions = [
@@ -49,19 +50,14 @@ export default function ProfileSection() {
     <section className="mb-10">
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">
         <div className="shrink-0">
-          <div className="h-20 w-20 overflow-hidden rounded-2xl bg-gray-200 sm:h-24 sm:w-24">
-            <svg
-              viewBox="0 0 128 128"
-              className="h-full w-full text-gray-400"
-              fill="currentColor"
-            >
-              <rect width="128" height="128" rx="16" fill="#d1d5db" />
-              <circle cx="64" cy="48" r="24" fill="#9ca3af" />
-              <path
-                d="M30 110c0-18.778 15.222-34 34-34s34 15.222 34 34"
-                fill="#9ca3af"
-              />
-            </svg>
+          <div className="h-20 w-20 overflow-hidden rounded-2xl sm:h-24 sm:w-24">
+            <Image
+              src="/icon.png"
+              alt="Snehasish Ray"
+              width={96}
+              height={96}
+              className="h-full w-full object-cover"
+            />
           </div>
         </div>
 
