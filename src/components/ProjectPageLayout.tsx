@@ -28,7 +28,7 @@ export function ProjectPageLayout({ content }: ProjectPageProps) {
         Back
       </Link>
 
-      <article className="prose prose-sm max-w-none">
+      <article className="prose prose-sm max-w-none dark:prose-invert">
         <MarkdownContent source={content} />
       </article>
     </div>

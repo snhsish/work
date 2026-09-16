@@ -24,7 +24,7 @@ export default async function Page({
     <div className="mx-auto w-full max-w-2xl px-5 py-12 sm:py-20">
       <Link
         href="/"
-        className="mb-8 inline-flex items-center gap-1.5 text-sm text-[#888] transition-colors hover:text-[#1a1a1a]"
+        className="mb-8 inline-flex items-center gap-1.5 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
       >
         <svg
           className="h-4 w-4"
@@ -42,7 +42,7 @@ export default async function Page({
         Back
       </Link>
 
-      <article className="prose prose-sm max-w-none">
+      <article className="prose prose-sm max-w-none dark:prose-invert">
         <MarkdownContent source={content} />
       </article>
     </div>

@@ -14,15 +14,21 @@ const CACHE_DURATION = 3600 * 1000;
 
 function getCachedData(): Contribution[] | null {
   try {
+    if (typeof window === "undefined") return null;
     const raw = localStorage.getItem(CACHE_KEY);
     if (!raw) return null;
     const { data, timestamp } = JSON.parse(raw);
+    if (!Array.isArray(data) || data.length === 0) {
+      localStorage.removeItem(CACHE_KEY);
+      return null;
+    }
     if (Date.now() - timestamp < CACHE_DURATION) return data;
   } catch {}
   return null;
 }
 
 function setCachedData(data: Contribution[]) {
+  if (!Array.isArray(data) || data.length === 0) return;
   localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
 }
 
@@ -37,8 +43,8 @@ function formatDate(dateStr: string) {
 }
 
 export default function ContributionGraph() {
-  const [contributions, setContributions] = useState<Contribution[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [contributions, setContributions] = useState<Contribution[]>(() => getCachedData() ?? []);
+  const [loading, setLoading] = useState(() => getCachedData() === null);
   const [error, setError] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; text: string } | null>(null);
   const [cellSize, setCellSize] = useState(12);
@@ -46,11 +52,6 @@ export default function ContributionGraph() {
 
   useEffect(() => {
     const cached = getCachedData();
-    if (cached) {
-      setContributions(cached);
-      setLoading(false);
-      return;
-    }
 
     fetch("/api/github-contributions")
       .then((res) => {
@@ -58,14 +59,19 @@ export default function ContributionGraph() {
         return res.json();
       })
       .then((data) => {
-        if (data.contributions) {
+        if (Array.isArray(data.contributions) && data.contributions.length > 0) {
           setContributions(data.contributions);
           setCachedData(data.contributions);
+          setError(null);
+        } else if (!cached) {
+          throw new Error("No contribution data available");
         }
         setLoading(false);
       })
-      .catch((err) => {
-        setError(err.message);
+      .catch((err: Error) => {
+        if (!cached) {
+          setError(err.message);
+        }
         setLoading(false);
       });
   }, []);
@@ -158,13 +164,9 @@ export default function ContributionGraph() {
   });
 
   const handleMouseEnter = (e: React.MouseEvent, contribution: Contribution) => {
-    const rect = graphRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
     setTooltip({
-      x,
-      y,
+      x: e.clientX,
+      y: e.clientY,
       text: `${contribution.count} contribution${contribution.count !== 1 ? "s" : ""} on ${formatDate(contribution.date)}`,
     });
   };
@@ -221,7 +223,7 @@ export default function ContributionGraph() {
 
         {tooltip && (
           <div
-            className="pointer-events-none absolute z-10 rounded-md bg-[var(--tooltip-bg)] px-2.5 py-1.5 text-xs text-[var(--tooltip-text)] shadow-lg"
+            className="pointer-events-none fixed z-10 rounded-md bg-[var(--tooltip-bg)] px-2.5 py-1.5 text-xs text-[var(--tooltip-text)] shadow-lg"
             style={{
               left: `${tooltip.x + 12}px`,
               top: `${tooltip.y - 30}px`,
