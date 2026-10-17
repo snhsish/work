@@ -8,12 +8,6 @@ const workEntries = [
     end: "Jul 2026",
     href: "/orcrys",
   },
-  {
-    company: "Freelance",
-    role: "Full-stack Web Developer",
-    start: "Dec 2022",
-    end: "Jan 2026",
-  },
 ];
 
 export default function WorkSection() {
